@@ -11,6 +11,22 @@ Code that implements the task described in Randy O'Reily's task in
 The package can be installed for general reuse, and contains unit tests to ensure
 proper functionality.
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+## Table of Contents
+
+- [Task Description](#task-description)
+	- [Desiderata](#desiderata)
+- [Getting Started](#getting-started)
+	- [Installation](#installation)
+	- [Usage](#usage)
+- [API](#api)
+	- [Generating Datasets](#generating-datasets)
+	- [Visualization](#visualization)
+- [References](#references)
+
+<!-- markdown-toc end -->
+
+
 ## Task Description
 
 The majority of the text below is taken directly from section **2** of the
@@ -18,25 +34,18 @@ paper.
 
 -   Combinatorial structure is implemented by having *four* different input-output
     slots.
-
 -   The output mapping for a given slot depends only on the corresponding input
     pattern for that slot (see [Brousse, 1993][2]; [Noelle & Cottrell, 1996][3],
     for similar tasks).
-
 -   Each slot has a vocabulary of input-output mappings.
-
 -   Input vocabulary consists of all 45 combinations of 5 horizontal and 5
     vertical bars in a 5x5 grid.
-
 -   Output mapping is a localist identification of the two input bars (similar to
     bar tasks used by [Foldiak, 1990][4]; [Saund, 1995][5]; [Zemel, 1993][6]; 
     [Dayan & Zemel, 1995][7]\).
-
 -   Total number of distinct input patterns is approximately 4.1 million.
-
 -   Models are intended only to train on 100 randomly constructed examples, and
     then test on an arbitraily large testing set (500 in the paper).
-
 -   Error criterion is scored such that each output unit has to be on the right
 	side of 0.5 according to the correct target pattern.
 
@@ -46,11 +55,11 @@ The paper described the task as having several desiderata.
 
 -   It has a simple combinatorial structure that allows for novel inputs to be
     composed from a small vocabulary of features.
-	
 -   There is some interesting substructure to the vocabulary mapping at each slot.
-
 -   The structure of the task should be apparent in the weight patterns of the
     models.
+
+<br>
 
 ## Getting Started
 
@@ -74,6 +83,7 @@ conda install `cat requirements.txt` -c conda-forge
 
 And then install the repo using `pip`:
 ```bash
+# Local install
 pip install .
 ```
 
@@ -92,6 +102,7 @@ from combinatorial_generalization import combigen
 # Import a specific function
 from combinatorial_generalization.make_datasets import generate_combigen_x_y_dataset
 ```
+<br>
 
 ## API
 
@@ -99,9 +110,8 @@ from combinatorial_generalization.make_datasets import generate_combigen_x_y_dat
 
 The main way to use the package is through the high level data generation
 functions in [`make_datasets.py`](combinatorial_generalization/make_datasets.py). 
-The three relevant ones and a description are shown below:
 
-- `generate_combigen_x_y_dataset` - Generates sample (X) and label (y) pairs
+1. `generate_combigen_x_y_dataset` - Generates sample (X) and label (y) pairs
 according to the desired task structure and statistics.
 
 ```python
@@ -111,15 +121,14 @@ from combinatorial_generalization.make_datasets import generate_combigen_x_y_dat
 X, y = generate_combigen_x_y_dataset() 
 ```
 
-- `generate_combigen_datasets` - Wraps the above functoin to return training,
+2. `generate_combigen_datasets` - Wraps the above functoin to return training,
 testing, and validation datasets
 
 ```python
 from combinatorial_generalization.make_datasets import generate_combigen_datasets
 
 # Outputs the data and labels
-(x_train, y_train), (x_val, y_val), (x_test, y_test) = \ 
-	generate_combigen_datasets()
+(x_train, y_train), (x_val, y_val), (x_test, y_test) = generate_combigen_datasets()
 ```
 
 See the docstrings for each of the functions for more details including their
@@ -138,14 +147,15 @@ import matplotlib.pyplot as plt
 from combinatorial_generalization.make_datasets import generate_combigen_x_y_dataset
 from combinatorial_generalization.visualize import heatmap
 
-# Generate the X and y sample
+# Generate a two sample dataset of X and y pairings
 X, y = generate_combigen_x_y_dataset(n_samples=2)
 
-# Plot the samples
+# Plot the sample
 heatmap(y, X)
 plt.show()
 ```
-![](images/heatmap_2_samples.png)
+
+<div align="center"> ![](images/heatmap_2_samples.png) </div>
 
 2. `visualize_combigen` - Plots some number of randomly generated X, y pairs of
 the combinatorial generalization task.
@@ -154,10 +164,67 @@ the combinatorial generalization task.
 import matplotlib.pyplot as plt
 from combinatorial_generalization.visualize import visualize_combigen
 
+# Plot two randomly generated sample, label pairs
 visualize_combigen(n_pairs=2)
 plt.show()
 ```
-![](images/visualize_combigen_2_samples.png)
+<div align="center"> ![](images/visualize_combigen_2_samples.png) </div>
+
+<br>
+
+## Example Use-Cases
+
+### Different Numbers of Lines
+
+The task has one line on each axis, but this is controllable by the user through
+the `n_lines` argument:
+
+```python
+# Generate with four lines
+X, y = generate_combigen_x_y_dataset(n_samples=4, n_lines=4)
+
+# Plot the sample
+heatmap(y, X)
+plt.show()
+```
+<div align="center"> ![](images/heatmap_4_lines.png) </div>
+
+### Nonuniform Line Statistics
+
+The statistics governing how likely a particular a line appears on a specific
+axis can be fully controlled using the `line_stats` argument:
+
+```python
+# First and last elements only
+line_stats = [[1,0,0,0,0],[0,0,0,0,1]]
+
+# Pass the line_stats arg
+X, y = generate_combigen_x_y_dataset(n_samples=2, line_stats=line_stats)
+
+# Plot the sample
+heatmap(y, X)
+plt.show()
+```
+
+<div align="center"> ![](images/heatmap_first_last_elements.png) </div>
+
+The values in `line_stats` will be normalized, so values can be defined relative
+to each other. For example, so define positions that are three times more likely
+than others:
+
+```python
+# First and last elements are 3 times as likely as other elements
+line_stats = [[3,1,1,1,1],[1,1,1,1,3]]
+
+# Pass the line_stats arg
+X, y = generate_combigen_x_y_dataset(n_samples=4, line_stats=line_stats)
+
+# Plot the sample
+heatmap(y, X)
+plt.show()
+```
+<div align="center"> ![](images/heatmap_varied_statistics.png) </div>
+
 
 ## References
 
