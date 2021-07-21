@@ -1,6 +1,6 @@
 <div align="center">
 
-# Combinatorial Generalizaton and Interactivity
+# Combinatorial Generalization and Interactivity
 
 ![](images/example_sample.png)
 
@@ -8,11 +8,11 @@
 
 Code that implements the task described in Randy O'Reily's task in
 [Generalization in Interactive Networks: The Benefits of Inhibitory Competition and Hebbian Learning][1].
-The package can be installed for general reuse, and contains unit tests to ensure
+The package can be installed for general reuse and contains unit tests to ensure
 proper functionality.
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-## Table of Contents
+## Table of Contents 
 
 - [Task Description](#task-description)
 	- [Desiderata](#desiderata)
@@ -22,10 +22,14 @@ proper functionality.
 - [API](#api)
 	- [Generating Datasets](#generating-datasets)
 	- [Visualization](#visualization)
+- [Example Use-Cases](#example-use-cases)
+	- [Different Numbers of Lines](#different-numbers-of-lines)
+	- [Nonuniform Line Statistics](#nonuniform-line-statistics)
 - [References](#references)
 
 <!-- markdown-toc end -->
 
+<br>
 
 ## Task Description
 
@@ -45,7 +49,7 @@ paper.
     [Dayan & Zemel, 1995][7]\).
 -   Total number of distinct input patterns is approximately 4.1 million.
 -   Models are intended only to train on 100 randomly constructed examples, and
-    then test on an arbitraily large testing set (500 in the paper).
+    then test on an arbitrarily large testing set (500 in the paper).
 -   Error criterion is scored such that each output unit has to be on the right
 	side of 0.5 according to the correct target pattern.
 
@@ -108,7 +112,7 @@ from combinatorial_generalization.make_datasets import generate_combigen_x_y_dat
 
 ### Generating Datasets
 
-The main way to use the package is through the high level data generation
+The main way to use the package is through the high-level data generation
 functions in [`make_datasets.py`](combinatorial_generalization/make_datasets.py). 
 
 1. `generate_combigen_x_y_dataset` - Generates sample (X) and label (y) pairs
@@ -154,8 +158,7 @@ X, y = generate_combigen_x_y_dataset(n_samples=2)
 heatmap(y, X)
 plt.show()
 ```
-
-<div align="center"> ![](images/heatmap_2_samples.png) </div>
+<img src="images/heatmap_2_samples.png" class="center"> 
 
 2. `visualize_combigen` - Plots some number of randomly generated X, y pairs of
 the combinatorial generalization task.
@@ -168,7 +171,7 @@ from combinatorial_generalization.visualize import visualize_combigen
 visualize_combigen(n_pairs=2)
 plt.show()
 ```
-<div align="center"> ![](images/visualize_combigen_2_samples.png) </div>
+<img src="images/visualize_combigen_2_samples.png" class="center"> 
 
 <br>
 
@@ -187,7 +190,7 @@ X, y = generate_combigen_x_y_dataset(n_samples=4, n_lines=4)
 heatmap(y, X)
 plt.show()
 ```
-<div align="center"> ![](images/heatmap_4_lines.png) </div>
+<img src="images/heatmap_4_lines.png" class="center"> 
 
 ### Nonuniform Line Statistics
 
@@ -206,10 +209,10 @@ heatmap(y, X)
 plt.show()
 ```
 
-<div align="center"> ![](images/heatmap_first_last_elements.png) </div>
+<img src="images/heatmap_first_last_elements.png" class="center"> 
 
 The values in `line_stats` will be normalized, so values can be defined relative
-to each other. For example, so define positions that are three times more likely
+to each other. For example, to define positions that are three times more likely
 than others:
 
 ```python
@@ -223,8 +226,9 @@ X, y = generate_combigen_x_y_dataset(n_samples=4, line_stats=line_stats)
 heatmap(y, X)
 plt.show()
 ```
-<div align="center"> ![](images/heatmap_varied_statistics.png) </div>
+<img src="images/heatmap_varied_statistics.png" class="center"> 
 
+<br>
 
 ## References
 
