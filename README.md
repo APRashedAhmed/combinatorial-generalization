@@ -179,8 +179,8 @@ plt.show()
 
 ### Different Numbers of Lines
 
-The task has one line on each axis, but this is controllable by the user through
-the `n_lines` argument:
+The task is set by default to use two lines per sample (as in the paper), but 
+this is controllable by the user through the `n_lines` argument:
 
 ```python
 # Generate with four lines
