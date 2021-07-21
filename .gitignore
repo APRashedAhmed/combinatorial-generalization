@@ -144,3 +144,9 @@ dmypy.json
 
 # JetBrains
 .idea/
+
+# Log directory
+logs/*
+
+# But keep all the .gitkeep files
+!*.gitkeep

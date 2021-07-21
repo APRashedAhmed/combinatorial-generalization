@@ -1,63 +1,15 @@
+<div align="center">
+
 # Combinatorial Generalizaton and Interactivity
+
+![](images/example_sample.png)
+
+</div>
 
 Code that implements the task described in Randy O'Reily's task in
 [Generalization in Interactive Networks: The Benefits of Inhibitory Competition and Hebbian Learning][1].
-
-## Getting Started
-
-### Installation
-
-To use the package, first clone it:
-
-```bash
-git clone https://github.com/APRashedAhmed/combinatorial-generalization.git
-```
-
-Install the requirements:
-
-```bash
-# For pip
-pip install requirements.txt
-
-# For conda
-conda install `cat requirements.txt`
-```
-
-And then install the repo using `pip`:
-```bash
-pip install .
-```
-
-### Usage
-
-Once installed, the repo functions similarly to any package installed by `pip`
-or `conda` and can be imported:
-
-```python
-# Import and alias the whole package
-import combinatorial_generalization as cg
-
-# Import a specific module
-from combinatorial_generalization import combigen
-
-# Import a specific function
-from combinatorial_generalization.make_datasets import generate_combigen_tf_datasets
-```
-
-### High Level API
-
-The main way to use the package is through the high level data generation
-functions in [`make_datasets.py`](combinatorial_generalization/make_datasets.py). 
-The three relevant ones and a description are shown below:
-
-- `generate_combigen_x_y_dataset` - Generates sample (X) and label (y) pairs
-according to the desired task structure and statistics.
-- `generate_combigen_datasets` - Wraps the above functoin to return training,
-testing, and validation datasets
-- `generate_combigen_tf_datasets` - Generates a `tf.Dataset` of the task
-
-See the docstrings for each of the functions for more details including their
-call signatures.
+The package can be installed for general reuse, and contains unit tests to ensure
+proper functionality.
 
 ## Task Description
 
@@ -99,7 +51,114 @@ The paper described the task as having several desiderata.
 
 -   The structure of the task should be apparent in the weight patterns of the
     models.
-	
+
+## Getting Started
+
+### Installation
+
+To use the package, first clone it:
+
+```bash
+git clone https://github.com/APRashedAhmed/combinatorial-generalization.git
+```
+
+Install the requirements:
+
+```bash
+# For pip
+pip install requirements.txt
+
+# For conda
+conda install `cat requirements.txt` -c conda-forge
+```
+
+And then install the repo using `pip`:
+```bash
+pip install .
+```
+
+### Usage
+
+Once installed, the repo functions similarly to any package installed by `pip`
+or `conda` and can be imported:
+
+```python
+# Import and alias the whole package
+import combinatorial_generalization as cg
+
+# Import a specific module
+from combinatorial_generalization import combigen
+
+# Import a specific function
+from combinatorial_generalization.make_datasets import generate_combigen_x_y_dataset
+```
+
+## API
+
+### Generating Datasets
+
+The main way to use the package is through the high level data generation
+functions in [`make_datasets.py`](combinatorial_generalization/make_datasets.py). 
+The three relevant ones and a description are shown below:
+
+- `generate_combigen_x_y_dataset` - Generates sample (X) and label (y) pairs
+according to the desired task structure and statistics.
+
+```python
+from combinatorial_generalization.make_datasets import generate_combigen_x_y_dataset
+
+# Outputs the data and labels
+X, y = generate_combigen_x_y_dataset() 
+```
+
+- `generate_combigen_datasets` - Wraps the above functoin to return training,
+testing, and validation datasets
+
+```python
+from combinatorial_generalization.make_datasets import generate_combigen_datasets
+
+# Outputs the data and labels
+(x_train, y_train), (x_val, y_val), (x_test, y_test) = \ 
+	generate_combigen_datasets()
+```
+
+See the docstrings for each of the functions for more details including their
+call signatures.
+
+### Visualization
+
+There are two main ways to visualize the task in 
+[`vizualize.py`](combinatorial_generalization/visualize.py):
+
+1. `heatmap` - A wrapper for `sns.heatmap` that plots the inputted y and X as a
+heatmap.
+
+```python
+import matplotlib.pyplot as plt
+from combinatorial_generalization.make_datasets import generate_combigen_x_y_dataset
+from combinatorial_generalization.visualize import heatmap
+
+# Generate the X and y sample
+X, y = generate_combigen_x_y_dataset(n_samples=2)
+
+# Plot the samples
+heatmap(y, X)
+plt.show()
+```
+![](images/heatmap_2_samples.png)
+
+2. `visualize_combigen` - Plots some number of randomly generated X, y pairs of
+the combinatorial generalization task.
+
+```python
+import matplotlib.pyplot as plt
+from combinatorial_generalization.visualize import visualize_combigen
+
+visualize_combigen(n_pairs=2)
+plt.show()
+```
+![](images/visualize_combigen_2_samples.png)
+
 ## References
 
 -   [Brousse, O. (1993). Generativity and systematicity in neural network combinatorial learning][2]
